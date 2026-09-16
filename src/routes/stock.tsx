@@ -188,7 +188,7 @@ function StockPage() {
           min={10000}
           max={MAX_PRICE}
           step={500}
-          onValueChange={([v]) => setPriceMax(v)}
+          onValueChange={(v) => setPriceMax(v[0] ?? MAX_PRICE)}
         />
       </FilterGroup>
 
@@ -212,7 +212,7 @@ function StockPage() {
           min={20000}
           max={MAX_MILEAGE}
           step={5000}
-          onValueChange={([v]) => setMileageMax(v)}
+          onValueChange={(v) => setMileageMax(v[0] ?? MAX_MILEAGE)}
         />
       </FilterGroup>
 
@@ -364,7 +364,7 @@ function CheckRow({
 }: {
   id: string;
   label: string;
-  hint?: string;
+  hint?: string | undefined;
   checked: boolean;
   onChange: () => void;
 }) {
