@@ -37,10 +37,12 @@ export const Route = createFileRoute("/custom-order")({
   component: CustomOrderPage,
 });
 
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbys-mxoiCsgNoucDdTpkDRyG8PDAQXn790UnmgWmiklG7_MDTzCjEhYU4_0xkUOvJUbdw/exec";
 const steps = ["Транспорт і специфікація", "Бюджет і строки", "Дані компанії"];
 
 function CustomOrderPage() {
   const [step, setStep] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     type: "van",
     brand: "",
@@ -58,11 +60,38 @@ function CustomOrderPage() {
 
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success(LEAD_TOAST.title, { description: LEAD_TOAST.description });
-    setStep(0);
-    setForm((f) => ({ ...f, company: "", taxId: "", contact: "", phone: "", email: "" }));
+    setLoading(true);
+
+    const payload = {
+      formType: "Авто під замовлення",
+      vehicleInfo: `${form.type}; ${form.brand} ${form.model}`.trim(),
+      company: form.company,
+      taxId: form.taxId,
+      contact: form.contact,
+      phone: form.phone,
+      email: form.email,
+      note: `Специфікація: ${form.specs}; бюджет: ${form.budget}; строк: ${form.timeline} днів`,
+    };
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      toast.success(LEAD_TOAST.title, { description: LEAD_TOAST.description });
+      setStep(0);
+      setForm((f) => ({ ...f, company: "", taxId: "", contact: "", phone: "", email: "" }));
+    } catch {
+      toast.error("Помилка відправки", {
+        description: "Не вдалося надіслати форму. Будь ласка, зателефонуйте нам.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -256,7 +285,9 @@ function CustomOrderPage() {
                 Далі
               </Button>
             ) : (
-              <Button type="submit">Надіслати запит</Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? "Відправка..." : "Надіслати запит"}
+              </Button>
             )}
           </div>
         </form>
