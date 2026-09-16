@@ -33,10 +33,14 @@ export function Footer() {
         </div>
         <div>
           <h3 className="eyebrow text-accent">Контакти</h3>
-          <ul className="mt-4 space-y-2 text-sm text-navy-foreground/80">
+          <ul className="mt-4 flex flex-col gap-2 text-sm text-navy-foreground/80">
             <li>Київ, вул. Промислова 12 (термінал IMUA)</li>
             <li>Пн–Пт 09:00–19:00, Сб 10:00–15:00</li>
-            <li>b2b@intramotion.ua</li>
+            <li>
+              <a className="transition-colors hover:text-navy-foreground" href="mailto:b2b@intramotion.ua">
+                b2b@intramotion.ua
+              </a>
+            </li>
           </ul>
           <p className="mt-4 text-xs text-navy-foreground/50">
             Контактні дані демонстраційні — надішліть свої актуальні, і ми їх замінимо.
