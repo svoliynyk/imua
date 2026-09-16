@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import type { Vehicle } from "@/data/vehicles";
 import { formatUsd } from "@/data/vehicles";
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbys-mxoiCsgNoucDdTpkDRyG8PDAQXn790UnmgWmiklG7_MDTzCjEhYU4_0xkUOvJUbdw/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzfX0tcE0AFdR4uOqUGLNbCy9RhufFXIKlfuK8T_8ALs2W9bPpOkIfgoXgWZu4e0UQ0Zg/exec";
 
 export const LEAD_TOAST = {
   title: "Заявку прийнято!",
