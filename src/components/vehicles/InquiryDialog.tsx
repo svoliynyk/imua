@@ -16,9 +16,11 @@ import { Textarea } from "@/components/ui/textarea";
 import type { Vehicle } from "@/data/vehicles";
 import { formatUsd } from "@/data/vehicles";
 
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbys-mxoiCsgNoucDdTpkDRyG8PDAQXn790UnmgWmiklG7_MDTzCjEhYU4_0xkUOvJUbdw/exec";
+
 export const LEAD_TOAST = {
-  title: "Дякуємо! Ваш запит прийнято",
-  description: "B2B менеджер автопарку зв'яжеться з вашою компанією протягом 15 хвилин.",
+  title: "Заявку прийнято!",
+  description: "B2B-менеджер IMUA зв'яжеться з вами протягом 15 хвилин.",
 };
 
 export function InquiryDialog({
@@ -35,48 +37,75 @@ export function InquiryDialog({
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (vehicle) {
       setNote(
-        `Цікавить ${vehicle.title} (${vehicle.year}), внутрішній ID ${vehicle.internalId}, ` +
-          `ціна ${formatUsd(vehicle.priceUsd)} з ПДВ. Прошу зв'язатися щодо бронювання та тест-драйву.`,
+        `Цікавить автомобіль: ${vehicle.title} (${vehicle.year}), внутрішній ID ${vehicle.internalId}, ціна ${formatUsd(vehicle.priceUsd)}`,
       );
     }
   }, [vehicle]);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onOpenChange(false);
-    toast.success(LEAD_TOAST.title, { description: LEAD_TOAST.description });
-    setCompany("");
-    setContact("");
-    setPhone("");
-    setEmail("");
+    setLoading(true);
+
+    const payload = {
+      formType: "Бронювання зі складу",
+      vehicleInfo: vehicle ? `${vehicle.title} (${vehicle.year}) ID: ${vehicle.internalId}` : "-",
+      company,
+      taxId: "-",
+      contact,
+      phone,
+      email,
+      note,
+    };
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      onOpenChange(false);
+      toast.success(LEAD_TOAST.title, { description: LEAD_TOAST.description });
+      setCompany("");
+      setContact("");
+      setPhone("");
+      setEmail("");
+    } catch {
+      toast.error("Помилка відправки", {
+        description: "Не вдалося надіслати форму. Будь ласка, зателефонуйте нам.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Швидкий запит / Тест-драйв</DialogTitle>
+          <DialogTitle>Бронювання автомобіля</DialogTitle>
           <DialogDescription>
             {vehicle
-              ? `${vehicle.title} · ${vehicle.year} · ${vehicle.internalId}`
-              : "Заповніть форму — ми підготуємо комерційну пропозицію."}
+              ? `${vehicle.title} • ${vehicle.year} • ID: ${vehicle.internalId}`
+              : "Залиште контакти для зв'язку з менеджером"}
           </DialogDescription>
         </DialogHeader>
-
         <form onSubmit={submit} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="iq-company">Назва компанії</Label>
+              <Label htmlFor="iq-company">Компанія / ФОП</Label>
               <Input
                 id="iq-company"
                 required
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
-                placeholder="ТОВ «Логістик Плюс»"
+                placeholder="ТОВ 'Логістик'"
               />
             </div>
             <div className="space-y-2">
@@ -86,7 +115,7 @@ export function InquiryDialog({
                 required
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-                placeholder="Іван Петренко"
+                placeholder="Олександр"
               />
             </div>
             <div className="space-y-2">
@@ -101,7 +130,7 @@ export function InquiryDialog({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="iq-email">Email</Label>
+              <Label htmlFor="iq-email">Корпоративний Email</Label>
               <Input
                 id="iq-email"
                 required
@@ -122,8 +151,8 @@ export function InquiryDialog({
             />
           </div>
           <DialogFooter>
-            <Button type="submit" className="w-full sm:w-auto">
-              Забронювати
+            <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+              {loading ? "Відправка..." : "Надіслати заявку"}
             </Button>
           </DialogFooter>
         </form>
