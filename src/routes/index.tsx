@@ -58,7 +58,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
           <p className="eyebrow text-accent">INTRAMOTION UKRAINE · B2B</p>
           <h1 className="mt-4 max-w-4xl text-3xl font-bold leading-tight text-navy-foreground sm:text-5xl">
-            Перевірені комерційні фургони та корпоративні авто для українського бізнесу
+            Перевірені комерційні фургони та корпоративні авто для бізнесу
           </h1>
           <p className="mt-5 max-w-2xl text-base text-navy-foreground/80">
             Власний цех технічного огляду ОТК, підтверджений пробіг і повна підтримка з ПДВ.
