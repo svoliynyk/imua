@@ -64,30 +64,48 @@ function CustomOrderPage() {
     e.preventDefault();
     setLoading(true);
 
+    const vehicleTypeLabel = form.type === "van" ? "Комерційний фургон" : "Легкове / корпоративне авто";
+
     const payload = {
       formType: "Авто під замовлення",
-      vehicleInfo: `${form.type}; ${form.brand} ${form.model}`.trim(),
+      vehicleInfo: `${vehicleTypeLabel}: ${form.brand} ${form.model}`.trim(),
       company: form.company,
       taxId: form.taxId,
       contact: form.contact,
       phone: form.phone,
       email: form.email,
-      note: `Специфікація: ${form.specs}; бюджет: ${form.budget}; строк: ${form.timeline} днів`,
+      note: `Специфікація: ${form.specs || "—"}; Бюджет: ${form.budget} USD; Строк: ${form.timeline} дн.; Файл: ${form.fileName || "немає"}`,
     };
 
     try {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
         body: JSON.stringify(payload),
       });
+
       toast.success(LEAD_TOAST.title, { description: LEAD_TOAST.description });
       setStep(0);
-      setForm((f) => ({ ...f, company: "", taxId: "", contact: "", phone: "", email: "" }));
+      setForm({
+        type: "van",
+        brand: "",
+        model: "",
+        specs: "",
+        budget: "30000-45000",
+        timeline: "60",
+        company: "",
+        taxId: "",
+        contact: "",
+        phone: "",
+        email: "",
+        fileName: "",
+      });
     } catch {
       toast.error("Помилка відправки", {
-        description: "Не вдалося надіслати форму. Будь ласка, зателефонуйте нам.",
+        description: "Не вдалося надіслати запит. Будь ласка, зателефонуйте нам напряму.",
       });
     } finally {
       setLoading(false);
