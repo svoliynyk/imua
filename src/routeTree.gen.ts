@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as B2bRouteImport } from './routes/b2b'
 import { Route as CustomOrderRouteImport } from './routes/custom-order'
 import { Route as InspectionRouteImport } from './routes/inspection'
@@ -25,11 +24,6 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const B2bRoute = B2bRouteImport.update({
@@ -56,7 +50,6 @@ const StockRoute = StockRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/b2b': typeof B2bRoute
   '/custom-order': typeof CustomOrderRoute
   '/inspection': typeof InspectionRoute
@@ -65,7 +58,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/b2b': typeof B2bRoute
   '/custom-order': typeof CustomOrderRoute
   '/inspection': typeof InspectionRoute
@@ -75,7 +67,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/b2b': typeof B2bRoute
   '/custom-order': typeof CustomOrderRoute
   '/inspection': typeof InspectionRoute
@@ -84,27 +75,13 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/about'
-    | '/admin'
-    | '/b2b'
-    | '/custom-order'
-    | '/inspection'
-    | '/stock'
+    '/' | '/about' | '/b2b' | '/custom-order' | '/inspection' | '/stock'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/about'
-    | '/admin'
-    | '/b2b'
-    | '/custom-order'
-    | '/inspection'
-    | '/stock'
+  to: '/' | '/about' | '/b2b' | '/custom-order' | '/inspection' | '/stock'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/admin'
     | '/b2b'
     | '/custom-order'
     | '/inspection'
@@ -114,7 +91,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
   B2bRoute: typeof B2bRoute
   CustomOrderRoute: typeof CustomOrderRoute
   InspectionRoute: typeof InspectionRoute
@@ -135,13 +111,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/b2b': {
@@ -178,7 +147,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
   B2bRoute: B2bRoute,
   CustomOrderRoute: CustomOrderRoute,
   InspectionRoute: InspectionRoute,
