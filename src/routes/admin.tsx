@@ -62,6 +62,10 @@ function AdminPage() {
 
 function AuthCard() {
   const [email, setEmail] = useState(ADMIN_EMAIL); const [password, setPassword] = useState(""); const [busy, setBusy] = useState(false);
-  const submit = async (event: React.FormEvent) => { event.preventDefault(); setBusy(true); const result = await (await getAuthClient())?.signIn.email({ email, password }); setBusy(false); if (result.error) toast.error("Не вдалося увійти"); };
+  const submit = async (event: React.FormEvent) => { event.preventDefault(); setBusy(true); const result = await (await getAuthClient())?.signIn.email({
+      email,
+      password,
+      callbackURL: window.location.origin,
+    }); setBusy(false); if (result.error) toast.error("Не вдалося увійти"); };
   return <main className="mx-auto max-w-md px-6 py-24"><Card><CardHeader><CardTitle>Вхід до адмін-панелі</CardTitle></CardHeader><CardContent><form onSubmit={submit} className="flex flex-col gap-4"><div className="flex flex-col gap-2"><Label htmlFor="admin-email">Email</Label><Input id="admin-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></div><div className="flex flex-col gap-2"><Label htmlFor="admin-password">Пароль</Label><Input id="admin-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required /></div><Button type="submit" disabled={busy}>{busy ? "Вхід…" : "Увійти"}</Button></form></CardContent></Card></main>;
 }
