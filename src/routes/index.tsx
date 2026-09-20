@@ -64,6 +64,12 @@ function Index() {
             Власний цех технічного огляду ОТК, підтверджений пробіг і повна підтримка з ПДВ.
             Оснащуємо автопарки SME технікою, якій можна довіряти щодня.
           </p>
+          <div className="mt-8 rounded-md border border-accent/40 bg-accent/10 p-4 text-sm text-navy-foreground/90 sm:max-w-2xl">
+            <p className="font-semibold text-accent">Підготуйте автопарк до нових правил з 2027 року</p>
+            <p className="mt-1 text-navy-foreground/75">
+              Обов&apos;язковий періодичний техогляд для легкових авто планують розширити в межах євроінтеграції. Уже зараз підбираємо та готуємо транспорт із повним протоколом перевірки ОТК.
+            </p>
+          </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild size="lg" variant="secondary">
               <Link to="/stock">
@@ -158,7 +164,7 @@ function Index() {
           <div>
             <h2 className="text-xl font-bold">Потрібен фургон, якого немає на складі?</h2>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-              Відкриємо індивідуальне замовлення на імпорт зі США або ЄС під вашу специфікацію — з
+              Відкриємо індивідуальне ��амовлення на імпорт зі США або ЄС під вашу специфікацію — з
               перевіркою до купівлі та оформленням на компанію.
             </p>
           </div>
