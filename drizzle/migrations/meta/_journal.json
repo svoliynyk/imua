@@ -8,6 +8,13 @@
       "when": 1789994894306,
       "tag": "0000_create_vehicles_and_roles",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789994921114,
+      "tag": "0001_vehicle_photos_storage_policies",
+      "breakpoints": true
     }
   ]
 }
